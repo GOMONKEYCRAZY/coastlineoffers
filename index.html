@@ -312,6 +312,19 @@
 
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
+    .sms-consent { margin-top: .25rem; }
+    .consent-label {
+      display: flex; align-items: flex-start; gap: .65rem; cursor: pointer;
+    }
+    .consent-label input[type="checkbox"] {
+      width: 16px; height: 16px; flex-shrink: 0; margin-top: 3px;
+      accent-color: var(--teal); cursor: pointer;
+    }
+    .consent-label span {
+      font-size: .76rem; color: var(--gray); line-height: 1.55;
+    }
+    .consent-label a { color: var(--teal); text-decoration: underline; }
+
     .form-submit {
       width: 100%;
       background: var(--teal); color: var(--white);
@@ -389,37 +402,40 @@
     ───────────────────────────────────────── */
     .conditions {
       background: var(--sand);
-      padding: 4rem 2rem;
+      padding: 5rem 2rem;
     }
-    .conditions-grid {
+    .situations-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.25rem;
     }
-    .cond-card {
+    .sit-card {
       background: var(--white);
       border-radius: var(--r-md);
       padding: 1.5rem 1rem;
       text-align: center;
       box-shadow: var(--sh-sm);
-      transition: transform .25s, box-shadow .25s;
+      border: 1.5px solid var(--sand-mid);
+      transition: transform .25s, box-shadow .25s, border-color .25s;
+      display: flex; flex-direction: column; align-items: center; gap: .75rem;
     }
-    .cond-card:hover {
-      transform: translateY(-5px);
+    .sit-card:hover {
+      transform: translateY(-4px);
       box-shadow: var(--sh-md);
+      border-color: var(--teal);
     }
-    .cond-icon {
-      width: 52px; height: 52px;
-      background: rgba(14,116,144,.1);
-      border-radius: 50%;
+    .sit-icon {
+      width: 56px; height: 56px;
       display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 1rem;
-      color: var(--teal);
+      color: var(--navy);
+      transition: color .25s;
     }
-    .cond-icon svg { width: 24px; height: 24px; }
-    .cond-card span {
-      font-size: .88rem; font-weight: 600; color: var(--navy);
-      line-height: 1.3;
+    .sit-card:hover .sit-icon { color: var(--teal); }
+    .sit-icon svg { width: 52px; height: 52px; }
+    .sit-icon img { width: 52px; height: 52px; object-fit: contain; }
+    .sit-label {
+      font-size: .82rem; font-weight: 700; color: var(--navy);
+      line-height: 1.35;
     }
 
     /* ─────────────────────────────────────────
@@ -922,6 +938,7 @@
       .about-inner { grid-template-columns: 1fr; gap: 3rem; }
       .reviews-grid { grid-template-columns: 1fr; }
       .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .situations-grid { grid-template-columns: repeat(3, 1fr); }
     }
     @media (max-width: 640px) {
       section { padding: 4rem 1.25rem; }
@@ -932,6 +949,7 @@
       .footer-bottom { flex-direction: column; text-align: center; }
       .hero-card { padding: 1.75rem 1.25rem; }
       .scroll-indicator { display: none; }
+      .situations-grid { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
@@ -952,9 +970,9 @@
   </ul>
 
   <div class="nav-right">
-    <a href="tel:9092063304" class="nav-phone">
+    <a href="tel:9496761949" class="nav-phone">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 6.75z"/></svg>
-      (909) 206-3304
+      (949) 676-1949
     </a>
     <a href="#get-offer" class="nav-cta">Get My Cash Offer</a>
     <button class="nav-hamburger" id="hamburger" aria-label="Menu">
@@ -969,7 +987,7 @@
   <a href="#about">About</a>
   <a href="#reviews">Reviews</a>
   <a href="#faq">FAQ</a>
-  <a href="tel:9092063304">(909) 206-3304</a>
+  <a href="tel:9496761949">(949) 676-1949</a>
   <a href="#get-offer" class="mob-cta">Get My Cash Offer</a>
 </div>
 
@@ -1032,6 +1050,14 @@
           <label for="h-situation">Tell Us About Your Situation (Optional)</label>
           <textarea id="h-situation" name="situation" placeholder="e.g. inherited property, need to sell fast, behind on payments..."></textarea>
         </div>
+        <!-- SMS Opt-In Consent (optional, A2P compliant) -->
+        <div class="form-field sms-consent">
+          <label class="consent-label">
+            <input type="checkbox" id="h-sms-consent-marketing" name="sms_consent_marketing" />
+            <span>By checking this box, you consent to receive marketing communications from <strong>Coastline Offers LLC</strong> via SMS messages. Message frequency may vary. We won't share your details with any third parties. Consent is not a condition for any purchase. Standard message &amp; data rates may apply. You can opt out at any time by replying <strong>STOP</strong>. For assistance, reply with <strong>HELP</strong> or contact us at <a href="tel:9496761949">(949) 676-1949</a>. By providing your details, you acknowledge and agree to our <a href="terms.html" target="_blank">Terms of Use</a> and <a href="privacy-policy.html" target="_blank">Privacy Policy</a>.</span>
+          </label>
+        </div>
+
         <button type="submit" class="form-submit">Get My Free Cash Offer →</button>
       </form>
 
@@ -1052,7 +1078,7 @@
   <!-- Wave -->
   <div class="hero-wave">
     <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#f5f0e8"/>
+      <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#1a3a54"/>
     </svg>
   </div>
 
@@ -1086,67 +1112,77 @@
 <section class="conditions">
   <div class="section-inner">
     <div class="section-header center fade-up">
-      <div class="section-tag">We Buy In Any Condition</div>
-      <h2 class="section-title">No Matter Your Situation — <em>We Can Help</em></h2>
-      <p class="section-sub">We've seen it all. Whatever you're going through, Coastline Offers has a solution.</p>
+      <div class="section-tag">No Matter Your Situation</div>
+      <h2 class="section-title">When to Reach Out — <em>We Can Help</em></h2>
+      <p class="section-sub">No matter what property-related challenge you're facing, we buy houses in any condition and close on your timeline.</p>
     </div>
-    <div class="conditions-grid">
-      <!-- Card 1 -->
-      <div class="cond-card fade-up d1">
-        <div class="cond-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
-        </div>
-        <span>Facing Foreclosure</span>
+    <div class="situations-grid">
+
+      <div class="sit-card fade-up d1">
+        <div class="sit-icon"><img src="images/fixer-upper.svg" alt="Fixer Upper" width="56" height="56" /></div>
+        <div class="sit-label">Fixer Upper</div>
       </div>
-      <!-- Card 2 -->
-      <div class="cond-card fade-up d2">
-        <div class="cond-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
-        </div>
-        <span>Inherited Property</span>
+
+      <div class="sit-card fade-up d2">
+        <div class="sit-icon"><img src="images/job-relocation.svg" alt="Job Relocation" width="56" height="56" /></div>
+        <div class="sit-label">Job Relocation</div>
       </div>
-      <!-- Card 3 -->
-      <div class="cond-card fade-up d3">
-        <div class="cond-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"/></svg>
-        </div>
-        <span>Needs Repairs</span>
+
+      <div class="sit-card fade-up d3">
+        <div class="sit-icon"><img src="images/inherited-property.svg" alt="Inherited Property" width="56" height="56" /></div>
+        <div class="sit-label">Inherited Property</div>
       </div>
-      <!-- Card 4 -->
-      <div class="cond-card fade-up d4">
-        <div class="cond-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
-        </div>
-        <span>Going Through Divorce</span>
+
+      <div class="sit-card fade-up d4">
+        <div class="sit-icon"><img src="images/vacant-property.svg" alt="Vacant Property" width="56" height="56" /></div>
+        <div class="sit-label">Vacant Property</div>
       </div>
-      <!-- Card 5 -->
-      <div class="cond-card fade-up d5">
-        <div class="cond-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/></svg>
-        </div>
-        <span>Relocating</span>
+
+      <div class="sit-card fade-up d5">
+        <div class="sit-icon"><img src="images/tenant-trouble.svg" alt="Tenant Trouble" width="56" height="56" /></div>
+        <div class="sit-label">Tenant Trouble</div>
       </div>
-      <!-- Card 6 -->
-      <div class="cond-card fade-up d6">
-        <div class="cond-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"/></svg>
-        </div>
-        <span>Behind on Payments</span>
+
+      <div class="sit-card fade-up d1">
+        <div class="sit-icon"><img src="images/water-fire-damage.svg" alt="Water & Fire Damage" width="56" height="56" /></div>
+        <div class="sit-label">Water & Fire Damage</div>
       </div>
-      <!-- Card 7 -->
-      <div class="cond-card fade-up d1">
-        <div class="cond-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
-        </div>
-        <span>Vacant Property</span>
+
+      <div class="sit-card fade-up d2">
+        <div class="sit-icon"><img src="images/financial-issues.svg" alt="Financial Issues" width="56" height="56" /></div>
+        <div class="sit-label">Financial Issues</div>
       </div>
-      <!-- Card 8 -->
-      <div class="cond-card fade-up d2">
-        <div class="cond-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z"/></svg>
-        </div>
-        <span>Fire / Water Damage</span>
+
+      <div class="sit-card fade-up d3">
+        <div class="sit-icon"><img src="images/unexpected-life-events.svg" alt="Unexpected Life Events" width="56" height="56" /></div>
+        <div class="sit-label">Unexpected Life Events</div>
       </div>
+
+      <div class="sit-card fade-up d4">
+        <div class="sit-icon"><img src="images/divorce.svg" alt="Divorce" width="56" height="56" /></div>
+        <div class="sit-label">Divorce</div>
+      </div>
+
+      <div class="sit-card fade-up d5">
+        <div class="sit-icon"><img src="images/downsizing.svg" alt="Downsizing" class="navy" width="56" height="56" /></div>
+        <div class="sit-label">Downsizing</div>
+      </div>
+
+      <div class="sit-card fade-up d1">
+        <div class="sit-icon"><img src="images/foreclosure.svg" alt="Foreclosure" class="navy" width="56" height="56" /></div>
+        <div class="sit-label">Facing Foreclosure</div>
+      </div>
+
+      <div class="sit-card fade-up d2">
+        <div class="sit-icon"><img src="images/bankruptcy.svg" alt="Bankruptcy" class="navy" width="56" height="56" /></div>
+        <div class="sit-label">Bankruptcy</div>
+      </div>
+
+      <div class="sit-card fade-up d3">
+        <div class="sit-icon"><img src="images/retirement.svg" alt="Retirement" class="navy" width="56" height="56" /></div>
+        <div class="sit-label">Retirement</div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -1380,6 +1416,7 @@
         <img src="images/Google.png" height="80" alt="Google 5-Star Reviews" style="display:block;" />
         <img src="images/BBB.webp" height="72" alt="BBB Accredited Business A+" style="display:block;" />
       </div>
+    </div><!-- /.section-header -->
     <div class="reviews-grid">
       <div class="review-card fade-up d1">
         <div class="review-stars">
@@ -1502,7 +1539,7 @@
     <h2>Ready to Get Your Cash Offer?</h2>
     <p>It's free, fast, and there's absolutely no obligation. Find out what your California home is worth today.</p>
     <a href="#get-offer" class="btn btn-white">Get My Free Cash Offer →</a>
-    <a href="tel:9092063304" class="cta-phone">Or call us directly: <strong>(909) 206-3304</strong></a>
+    <a href="tel:9496761949" class="cta-phone">Or call us directly: <strong>(949) 676-1949</strong></a>
   </div>
 </section>
 
@@ -1517,13 +1554,17 @@
         <a href="#" class="nav-logo">Coastline <span style="color:var(--teal-lt);">Offers</span></a>
         <p>We buy homes fast, for cash, anywhere in California. No repairs, no fees, no hassle — just a fair offer and a smooth closing.</p>
         <div class="footer-contact">
-          <a href="tel:9092063304">
+          <a href="tel:9496761949">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 6.75z"/></svg>
-            (909) 206-3304
+            (949) 676-1949
           </a>
           <a href="mailto:info@coastlineoffers.com">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
             info@coastlineoffers.com
+          </a>
+          <a href="https://maps.google.com/?q=3400+Cottage+Way+Ste+G2+%2334319+Sacramento+CA+95825" target="_blank" rel="noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+            3400 Cottage Way, Ste G2 #34319<br>Sacramento, CA 95825
           </a>
         </div>
       </div>
@@ -1556,41 +1597,16 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2024 Coastline Offers. All rights reserved.</span>
+      <span>© 2026 Coastline Offers LLC. All rights reserved.</span>
       <div class="footer-legal">
-        <a href="#" id="privacy-link">Privacy Policy</a>
-        <a href="#" id="terms-link">Terms of Service</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Use</a>
       </div>
     </div>
   </div>
 </footer>
 
 
-<!-- ═══════════════════════════════
-     PRIVACY MODAL
-═══════════════════════════════ -->
-<div class="modal-overlay" id="privacy-modal">
-  <div class="modal-box">
-    <button class="modal-close" data-close="privacy-modal">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-    </button>
-    <h2>Privacy Policy</h2>
-    <p style="font-size:.9rem;color:var(--gray);line-height:1.7;">Coastline Offers is committed to protecting your privacy. Any information you submit through our forms is used solely to contact you about purchasing your property. We do not sell, rent, or share your personal information with third parties. By submitting your information you consent to being contacted by our team via phone, email, or SMS.</p>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════
-     TERMS MODAL
-═══════════════════════════════ -->
-<div class="modal-overlay" id="terms-modal">
-  <div class="modal-box">
-    <button class="modal-close" data-close="terms-modal">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-    </button>
-    <h2>Terms of Service</h2>
-    <p style="font-size:.9rem;color:var(--gray);line-height:1.7;">By using this website you agree to our terms of service. The information provided on this site is for general informational purposes only. All offers are subject to property inspection and verification. Coastline Offers reserves the right to withdraw or modify any offer at any time prior to signing of a purchase agreement.</p>
-  </div>
-</div>
 
 
 <!-- ═══════════════════════════════
@@ -1674,14 +1690,6 @@
   submitForm(document.getElementById('hero-form'), 'hero-success');
 
   // ── Modals ──
-  document.getElementById('privacy-link').addEventListener('click', (e) => {
-    e.preventDefault();
-    document.getElementById('privacy-modal').classList.add('open');
-  });
-  document.getElementById('terms-link').addEventListener('click', (e) => {
-    e.preventDefault();
-    document.getElementById('terms-modal').classList.add('open');
-  });
   document.querySelectorAll('.modal-close').forEach(btn => {
     btn.addEventListener('click', () => {
       document.getElementById(btn.dataset.close).classList.remove('open');
@@ -1725,6 +1733,10 @@
     });
   });
 </script>
+
+
+<!-- Chat Widget -->
+<script src="https://widgets.leadconnectorhq.com/loader.js" data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js" data-widget-id="69f2bce3191334c797925f58" data-source="WEB_USER"></script>
 
 </body>
 </html>
